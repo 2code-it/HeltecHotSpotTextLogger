@@ -5,7 +5,7 @@ Gets the data from a heltec hotspot and saves it to text format
 ## PreReqs
 dotnet5 desktop runtime
 
-## Config
+## Config app.ini
 - HeliumHotSpotAddress= (not used)
 - LocalIPAddress=192.168.1.2 (hotspot local network address)
 - LoginName=HT-M2808 (default dashboard login name)
