@@ -1,0 +1,97 @@
+﻿<Window x:Class="HeltecTextLoggerApp.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HeltecTextLoggerApp"
+	   xmlns:c="clr-namespace:HeltecTextLoggerApp.Converters"
+        mc:Ignorable="d"
+        Title="Heltec to text" Height="400" Width="1000">
+	<Window.Resources>
+		<ResourceDictionary>
+			<c:BooleanToTextConverter x:Key="boolToTextConverter" />
+			<c:BooleanInvertConverter x:Key="boolInvertConverter" />
+		</ResourceDictionary>
+	</Window.Resources>
+    <Grid>
+		<Grid.Resources>
+			<Style TargetType="TextBox">
+				<Setter Property="Margin" Value="2"/>
+				<Setter Property="VerticalContentAlignment" Value="Center"/>
+			</Style>
+			<Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="numeric">
+				<Setter Property="HorizontalContentAlignment" Value="Right"/>
+			</Style>
+			<Style TargetType="Label">
+				<Setter Property="Margin" Value="2"/>
+				<Setter Property="VerticalContentAlignment" Value="Center"/>
+			</Style>
+			<Style TargetType="Button">
+				<Setter Property="Margin" Value="2"/>
+				<Setter Property="VerticalContentAlignment" Value="Center"/>
+			</Style>
+		</Grid.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="24" />
+			<RowDefinition Height="100" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<Menu Grid.Row="0" IsMainMenu="True" Padding="2">
+			<MenuItem Header="File">
+				<MenuItem Header="Start" Command="{Binding CommandStartLogger}" />
+				<MenuItem Header="Stop" Command="{Binding CommandStopLogger}"/>
+				<Separator />
+				<MenuItem Header="Exit" Command="{Binding CommandExitApplication}" />
+			</MenuItem>
+		</Menu>
+		<StackPanel Grid.Row="1" Orientation="Horizontal" IsEnabled="{Binding IsRunning, Converter={StaticResource boolInvertConverter}}">
+			<StackPanel Width="240">
+				<StackPanel Orientation="Horizontal">
+					<Label Content="Hotspot IP" Width="100"/>
+					<TextBox Text="{Binding LogInfo.LocalIPAddress}" Width="100" />
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<Label Content="User" Width="100"/>
+					<TextBox Text="{Binding LogInfo.LoginName}" Width="80" />
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<Label Content="Password" Width="100"/>
+					<TextBox Text="{Binding LogInfo.LoginPassword}" Width="80" />
+				</StackPanel>
+			</StackPanel>
+			<StackPanel Width="200">
+				<StackPanel Orientation="Horizontal">
+					<Label Content="Lora log interval" Width="120" />
+					<TextBox Text="{Binding LogInfo.LoraLogIntervalInMinutes, UpdateSourceTrigger=PropertyChanged}" Width="40" Style="{StaticResource numeric}" />
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<Label Content="Status log interval" Width="120" />
+					<TextBox Text="{Binding LogInfo.StatusLogIntervalInMinutes, UpdateSourceTrigger=PropertyChanged}" Width="40" Style="{StaticResource numeric}" />
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<Label Content="Miner log interval" Width="120" />
+					<TextBox Text="{Binding LogInfo.MinerLogIntervalInMinutes, UpdateSourceTrigger=PropertyChanged}" Width="40" Style="{StaticResource numeric}"/>
+				</StackPanel>
+			</StackPanel>
+			<StackPanel Width="200">
+				<StackPanel Orientation="Horizontal">
+					<Label Content="Lora uplink amount" Width="130" />
+					<TextBox Text="{Binding LogInfo.LoraLogUplinkAmount, UpdateSourceTrigger=PropertyChanged}" Width="40" Style="{StaticResource numeric}" />
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<Label Content="Lora downlink amount" Width="130" />
+					<TextBox Text="{Binding LogInfo.LoraLogDownlinkAmount, UpdateSourceTrigger=PropertyChanged}" Width="40" Style="{StaticResource numeric}" />
+				</StackPanel>
+			</StackPanel>
+
+		</StackPanel>
+		<DataGrid Grid.Row="2" ItemsSource="{Binding SystemMessages}" AutoGenerateColumns="False" CanUserReorderColumns="False">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="created" Binding="{Binding Created}" Width="130" />
+				<DataGridTextColumn Header="severity" Binding="{Binding Severity}" Width="60"/>
+				<DataGridTextColumn Header="message" Binding="{Binding Message}" Width="*" />
+			</DataGrid.Columns>
+		</DataGrid>
+    </Grid>
+</Window>
