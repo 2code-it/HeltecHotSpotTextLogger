@@ -8,5 +8,7 @@ namespace HeltecHotSpot.Data
 		HotSpotStatus GetStatus();
 		void ResetPassword(string newPassword, string newPasswordRepeat);
 		MinerLogEntry[] GetMinerLogEntries();
+
+		void RestartMiner();
 	}
 }

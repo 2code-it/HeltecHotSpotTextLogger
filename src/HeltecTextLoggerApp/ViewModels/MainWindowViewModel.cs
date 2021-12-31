@@ -41,7 +41,7 @@ namespace HeltecTextLoggerApp.ViewModels
 			set => Set(ref _isRunning, value);
 		}
 
-		public ObservableCollection<Models.SystemMessage> SystemMessages { get; private set; } = new ObservableCollection<Models.SystemMessage>();
+		public List<Models.SystemMessage> SystemMessages { get; private set; } = new List<Models.SystemMessage>();
 
 		private void OnStartLogger(object parameter)
 		{
@@ -58,16 +58,21 @@ namespace HeltecTextLoggerApp.ViewModels
 
 		private void OnExitApplication(object parameter)
 		{
+			if(IsRunning)
+				_logTaskSchedulingService.Stop();
+
+			_messengerService.Unsubscribe<Models.SystemMessage>(this);
 			App.Current.Shutdown();
 		}
 
 		private void OnReceiveSystemMessage(Models.SystemMessage message)
 		{
-			App.Current.Dispatcher.Invoke(() =>
+			SystemMessages.Insert(0, message);
+			while (SystemMessages.Count > LogInfo.MaxSystemMessages)
 			{
-				SystemMessages.Insert(0, message);
-			});
-			
+				SystemMessages.RemoveAt(SystemMessages.Count - 1);
+			}
+			OnPropertyChanged(nameof(SystemMessages));
 		}
 	}
 }

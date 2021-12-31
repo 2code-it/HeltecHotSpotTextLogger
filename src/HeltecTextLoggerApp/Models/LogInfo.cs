@@ -9,6 +9,7 @@ namespace HeltecTextLoggerApp.Models
 {
 	public class LogInfo : Mvvm.ObservableObject, ILogInfo
 	{
+		private int _maxSystemMessages;
 		private string _heliumHotSpotAddress;
 		private string _localIPAddress;
 		private string _loginName;
@@ -19,7 +20,7 @@ namespace HeltecTextLoggerApp.Models
 		private int _statusLogIntervalInMinutes;
 		private int _minerLogIntervalInMinutes;
 
-
+		public int MaxSystemMessages { get => _maxSystemMessages; set => Set(ref _maxSystemMessages, value); }
 		public string HeliumHotSpotAddress { get => _heliumHotSpotAddress; set => Set(ref _heliumHotSpotAddress, value); }
 		public string LocalIPAddress { get => _localIPAddress; set => Set(ref _localIPAddress, value); }
 		public string LoginName { get => _loginName; set => Set(ref _loginName, value); }

@@ -60,6 +60,12 @@ namespace HeltecTextLoggerApp.Services
 			throw new NotImplementedException();
 		}
 
+		public void RestartMiner()
+		{
+			var request = new RequestBase() { apply = "restartminer" };
+			UploadString("apply.php", JsonSerializer.Serialize(request));
+		}
+
 		public MinerLogEntry[] GetMinerLogEntries()
 		{
 			//2021-12-18 00:14:48.630 6 [error] <0.7356.7>@miner_onion_server:send_witness:207 failed to send witness, max retry
@@ -119,7 +125,7 @@ namespace HeltecTextLoggerApp.Services
 			logEntry.severity = parts[5].Trim('[', ']');
 			logEntry.origin = parts[6];
 			logEntry.source = parts[7];
-			logEntry.code = Convert.ToInt32(parts[8]);
+			logEntry.code = Convert.ToInt32(parts[8].Trim('{','}').Substring(0,3));
 			logEntry.message = string.Join(' ', parts.Skip(9));
 			return logEntry;
 		}

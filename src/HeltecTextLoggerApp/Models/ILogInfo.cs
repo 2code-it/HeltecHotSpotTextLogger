@@ -4,6 +4,7 @@ namespace HeltecTextLoggerApp.Models
 {
 	public interface ILogInfo
 	{
+		int MaxSystemMessages { get; set; }
 		string HeliumHotSpotAddress { get; set; }
 		string LocalIPAddress { get; set; }
 		string LoginName { get; set; }
